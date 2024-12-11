@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Simple Nodejs-powered Web Server</title>
+    <link rel="stylesheet" href="/style.css">
+  </head>
+  <body>
+
+    <h1>SNWS</h1><br>
+    
+    <div class="opts">
+      <input type="text" id="path-input" placeholder="Folder path"> <button onclick="startServer()">Start</button> <button onclick="stopServer()">Stop</button>
+    </div>
+
+    <br>
+    
+    <pre id="status">Server stopped.</pre>
+
+    <script src="/js/neutralino.js"></script>
+    <!-- Your app's source files -->
+    <script src="/js/main.js"></script>
+    <script>
+
+async function startServer() {
+    try {
+        const path = document.getElementById('path-input').value || '.';
+        document.getElementById('status').innerText = 'Starting server...';
+
+        await Neutralino.os.execCommand(`node server.js start "${path}"`, { background: true });
+        
+        document.getElementById('status').innerText = 'Server running!';
+        console.log('Server started successfully.');
+    } catch (error) {
+        console.error('Failed to start server:', error);
+        document.getElementById('status').innerText = 'Failed to start server: '+error;
+    }
+}
+
+async function stopServer() {
+  try {
+        const path = document.getElementById('path-input').value || '.';
+        document.getElementById('status').innerText = 'Stopping server...';
+
+        await Neutralino.os.execCommand(`node server.js stop`, { background: true });
+        
+        document.getElementById('status').innerText = 'Server stopped.';
+        console.log('Server stopped successfully.');
+    } catch (error) {
+        console.error('Failed to stop server:', error);
+        document.getElementById('status').innerText = 'Failed to stop server: '+error;
+    }
+  }
+</script>
+
+  </body>
+</html>
